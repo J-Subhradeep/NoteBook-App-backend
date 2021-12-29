@@ -54,3 +54,16 @@ class LoginUserApi(APIView):
             return Response({'error': 'error'})
         # email = data.get('email')
         # password = data.get('password')
+
+
+class VarifyUser(APIView):
+    def post(self, request, *args, **kwargs):
+        token = request.data.get('token')
+        try:
+            payload = jwt.decode(token, str(settings.SECRET_KEY), ['HS256'])
+            user = User.objects.get(pk=payload.get('user_id'))
+            serializer = UserSerializer(user)
+            return Response(serializer.data)
+        except:
+            print("error")
+            return Response({'error': True})

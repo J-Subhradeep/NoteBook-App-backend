@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', views.UserView.as_view()),
     path('gettoken/', TokenObtainPairView.as_view()),
+    path('verify/', views.LoginUserApi.as_view())
 ]

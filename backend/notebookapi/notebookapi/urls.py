@@ -22,5 +22,7 @@ urlpatterns = [
     path('user/', views.UserView.as_view()),
     path('gettoken/', TokenObtainPairView.as_view()),
     path('verify/', views.LoginUserApi.as_view()),
-    path('verif/', views.VarifyUser.as_view())
+    path('verif/', views.VarifyUser.as_view()),
+    path('notes/', views.UsersNotes.as_view()),
+    path('postnotes/', views.NotesPost.as_view()),
 ]

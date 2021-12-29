@@ -39,18 +39,22 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'customauthentication',
     'rest_framework',
+    'corsheaders'
 ]
 AUTH_USER_MODEL = 'customauthentication.User'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+CORS_ALLOW = [
+    "*"
+]
 ROOT_URLCONF = 'notebookapi.urls'
 
 TEMPLATES = [
@@ -113,7 +117,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+# USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)

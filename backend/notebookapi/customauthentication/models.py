@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-
+import datetime
 # Create your models here.
 
 
@@ -12,7 +12,8 @@ class CustomUserManager(BaseUserManager):
             raise TypeError("User's must have an username")
         if not password:
             raise TypeError("User's must have an password")
-        user = self.model(email=self.normalize_email(email), username=username)
+        user = self.model(email=self.normalize_email(
+            email), username=username)
         user.set_password(password)
         user.save()
         return user

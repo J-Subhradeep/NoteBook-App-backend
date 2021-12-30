@@ -82,5 +82,18 @@ class UsersNotes(APIView):
 class NotesPost(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data
-        
-        return Response({})
+        print(data)
+        token = data.get('token')
+        if token:
+            try:
+                payload = jwt.decode(token, settings.SECRET_KEY, ["HS256"])
+                print(payload)
+                id = payload.get('user_id')
+                user = User.objects.get(pk=id)
+                note = Note(title=data.get('title'),
+                            description=data.get('description'), written_by=user.email, writter=user)
+                print(note)
+                note.save()
+                return Response({'msg': True})
+            except:
+                return Response({})

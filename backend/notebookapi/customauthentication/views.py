@@ -97,3 +97,10 @@ class NotesPost(APIView):
                 return Response({'msg': True})
             except:
                 return Response({})
+
+
+class NotesDelete(APIView):
+    def delete(self, request, pk=None, *args, **kwargs):
+        # print("pk-", pk)
+        Note.objects.get(pk=pk).delete()
+        return Response({})

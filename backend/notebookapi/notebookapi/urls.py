@@ -25,4 +25,5 @@ urlpatterns = [
     path('verif/', views.VarifyUser.as_view()),
     path('notes/', views.UsersNotes.as_view()),
     path('postnotes/', views.NotesPost.as_view()),
+    path('deletenotes/<int:pk>/', views.NotesDelete.as_view()),
 ]

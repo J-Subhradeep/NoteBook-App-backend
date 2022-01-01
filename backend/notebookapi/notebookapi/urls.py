@@ -26,4 +26,6 @@ urlpatterns = [
     path('notes/', views.UsersNotes.as_view()),
     path('postnotes/', views.NotesPost.as_view()),
     path('deletenotes/<int:pk>/', views.NotesDelete.as_view()),
+    path('foreditget/', views.GetNoteForEdit.as_view()),
+    path('foreditget/<int:pk>/', views.GetNoteForEdit.as_view()),
 ]

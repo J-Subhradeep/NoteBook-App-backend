@@ -79,6 +79,41 @@ class UsersNotes(APIView):
             return Response({'error': True})
 
 
+class GetNoteForEdit(APIView):
+    def post(self, request, pk=None, *args, **kwargs):
+
+        data = request.data
+        note_id = data.get('note_id')
+        token = request.data.get('token')
+        try:
+            payload = jwt.decode(token, str(settings.SECRET_KEY), ['HS256'])
+            id = payload.get('user_id')
+            user = User.objects.get(pk=id)
+            note = Note.objects.get(pk=note_id)
+            if note.writter == user:
+                serializer = NotesSerializer(note)
+                return Response(serializer.data)
+            else:
+                return Response({})
+        except:
+            return Response({'error': True})
+
+    def put(self, request, pk=None, *args, **kwargs):
+        data = request.data
+        token = request.data.get('token')
+        try:
+            payload = jwt.decode(token, str(settings.SECRET_KEY), ['HS256'])
+            id = payload.get('user_id')
+            user = User.objects.get(pk=id)
+            note = Note(pk=pk, title=data.get('title'), description=data.get(
+                'description'), written_by=data.get('written_by'), writter=user)
+
+            note.save()
+            return Response({'success': True})
+        except:
+            return Response({'error': True})
+
+
 class NotesPost(APIView):
     def post(self, request, *args, **kwargs):
         data = request.data

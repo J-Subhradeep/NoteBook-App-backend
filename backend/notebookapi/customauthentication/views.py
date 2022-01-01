@@ -94,9 +94,9 @@ class GetNoteForEdit(APIView):
                 serializer = NotesSerializer(note)
                 return Response(serializer.data)
             else:
-                return Response({})
+                return Response({}, status=status.HTTP_400_BAD_REQUEST)
         except:
-            return Response({'error': True})
+            return Response({'error': True}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk=None, *args, **kwargs):
         data = request.data
@@ -105,8 +105,9 @@ class GetNoteForEdit(APIView):
             payload = jwt.decode(token, str(settings.SECRET_KEY), ['HS256'])
             id = payload.get('user_id')
             user = User.objects.get(pk=id)
-            note = Note(pk=pk, title=data.get('title'), description=data.get(
-                'description'), written_by=data.get('written_by'), writter=user)
+            existingnote = Note.objects.get(pk=pk)
+            note = Note(pk=pk, title=data.get('title', existingnote.title), description=data.get(
+                'description', existingnote.description), written_by=data.get('written_by', existingnote.written_by), writter=user)
 
             note.save()
             return Response({'success': True})
@@ -126,7 +127,7 @@ class NotesPost(APIView):
                 id = payload.get('user_id')
                 user = User.objects.get(pk=id)
                 note = Note(title=data.get('title'),
-                            description=data.get('description'), written_by=user.email, writter=user)
+                            description=data.get('description'), written_by=data.get('written_by'), writter=user)
                 print(note)
                 note.save()
                 return Response({'msg': True})

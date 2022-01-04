@@ -1,9 +1,11 @@
 from django.shortcuts import render
+from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import User, Note
 from .serializers import UserSerializer, NotesSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 import datetime
 import jwt
 from django.conf import settings
@@ -139,4 +141,26 @@ class NotesDelete(APIView):
     def delete(self, request, pk=None, *args, **kwargs):
         # print("pk-", pk)
         Note.objects.get(pk=pk).delete()
+        return Response({})
+
+
+class UserEditView(APIView):
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        # refresh = RefreshToken.for_user(User.objects.filter(
+        #     email=request.data.get('email')).first())
+        user = authenticate(email=request.data.get(
+            'email'), password=data.get('password'))
+        # print(data)
+        # print(user)
+        if user:
+            user_obj = User.objects.filter(email=data.get('email')).first()
+            # user_obj = User.objects.create_user(email=data.get(
+            #     'newemail'), password=data.get('newpassword'), username=data.get('username'))
+            User.objects.edit_user(user_obj, email=data.get('newemail'), username=data.get(
+                'username'), password=data.get('newpassword'))
+            serializer = UserSerializer(user_obj)
+            print(serializer.data)
+
+        # print(refresh)
         return Response({})

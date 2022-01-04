@@ -18,6 +18,14 @@ class CustomUserManager(BaseUserManager):
         user.save()
         return user
 
+    def edit_user(self, user, email=None, username=None, password=None):
+        print(user)
+        user.email = email
+        user.username = username
+        user.set_password(password)
+        user.save()
+        return user
+
     def create_superuser(self, email, username, password):
         user = self.create_user(email, username, password)
         user.is_superuser = True

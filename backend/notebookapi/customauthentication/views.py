@@ -161,6 +161,7 @@ class UserEditView(APIView):
                 'username'), password=data.get('newpassword'))
             serializer = UserSerializer(user_obj)
             print(serializer.data)
-
+            return Response({})
+        else:
+            return Response({}, status=status.HTTP_400_BAD_REQUEST)
         # print(refresh)
-        return Response({})
